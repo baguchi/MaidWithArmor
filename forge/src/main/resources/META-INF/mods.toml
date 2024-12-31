@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[40,)"
+#issueTrackerURL = ""
+license = "MIT LICENSE"
+
+[[mods]]
+modId = "maid_with_armor"
+version = "${version}"
+displayName = "Maid With Armor"
+authors = "baguchi"
+description = '''
+This mod support custom armor model with maid
+'''
+#logoFile = ""
+
+[[dependencies.maid_with_armor]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.maid_with_armor]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.maid_with_armor]]
+modId = "architectury"
+mandatory = true
+versionRange = "[4.4.70,)"
+ordering = "AFTER"
+side = "BOTH"

@@ -32,28 +32,28 @@ public class ModelLittleMaid_AugMixin extends ModelLittleMaidBase implements IMa
 
     @Override
     public void translateToChest(ModelRenderer var1, PoseStack var2) {
-        var2.scale(0.85F, 0.85F, 0.85F);
         CustomMaidArmorLayer.translateAndRotate(this.mainFrame, var2);
         CustomMaidArmorLayer.translateAndRotate(this.bipedTorso, var2);
         CustomMaidArmorLayer.translateAndRotate(var1, var2);
+        var2.scale(0.85F, 0.85F, 0.85F);
     }
 
     @Override
     public void translateToLeg(ModelRenderer var1, PoseStack var2) {
-        var2.translate(0, (4 / 18F), 0);
         CustomMaidArmorLayer.translateAndRotate(this.mainFrame, var2);
         CustomMaidArmorLayer.translateAndRotate(this.bipedTorso, var2);
         CustomMaidArmorLayer.translateAndRotate(this.bipedBody, var2);
         CustomMaidArmorLayer.translateAndRotate(var1, var2);
+        var2.translate(0, (4 / 18F), 0);
     }
 
     @Override
     public void translateToChestPat(ModelRenderer var1, PoseStack var2) {
-        var2.scale(0.85F, 0.85F, 0.85F);
         CustomMaidArmorLayer.translateAndRotate(this.mainFrame, var2);
         CustomMaidArmorLayer.translateAndRotate(this.bipedTorso, var2);
         CustomMaidArmorLayer.translateAndRotate(this.bipedBody, var2);
         CustomMaidArmorLayer.translateAndRotate(var1, var2);
+        var2.scale(0.85F, 0.85F, 0.85F);
     }
 
     @Override

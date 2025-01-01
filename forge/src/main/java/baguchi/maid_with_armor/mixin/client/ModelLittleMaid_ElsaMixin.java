@@ -32,11 +32,11 @@ public class ModelLittleMaid_ElsaMixin extends ModelLittleMaidBase implements IM
 
     @Override
     public void translateToChest(ModelRenderer var1, PoseStack var2) {
-        var2.translate(0, -(6 / 18F), 0);
-        var2.scale(0.85F, 0.85F, 0.85F);
         CustomMaidArmorLayer.translateAndRotate(this.mainFrame, var2);
         CustomMaidArmorLayer.translateAndRotate(this.bipedTorso, var2);
         CustomMaidArmorLayer.translateAndRotate(var1, var2);
+        var2.translate(0, -(6 / 18F), 0);
+        var2.scale(0.9F, 0.9F, 0.9F);
     }
 
     @Override

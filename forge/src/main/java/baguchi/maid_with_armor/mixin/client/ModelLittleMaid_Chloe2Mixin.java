@@ -43,15 +43,15 @@ public class ModelLittleMaid_Chloe2Mixin extends ModelLittleMaidBase implements 
 
     @Override
     public void translateToChest(ModelRenderer var1, PoseStack var2) {
-        var2.translate(0, -(6 / 18F), 0);
-        var2.scale(0.85F, 0.85F, 0.85F);
         CustomMaidArmorLayer.translateAndRotate(this.mainFrame, var2);
         CustomMaidArmorLayer.translateAndRotate(var1, var2);
+
+        var2.translate(0, -(6 / 18F), 0);
+        var2.scale(0.9F, 0.9F, 0.9F);
     }
 
     @Override
     public void translateToLeg(ModelRenderer var1, PoseStack var2) {
-        var2.translate(0, -(4 / 18F), 0);
         CustomMaidArmorLayer.translateAndRotate(this.mainFrame, var2);
         if (var1 == this.bipedRightLeg) {
             CustomMaidArmorLayer.translateAndRotate(this.upperRightLeg, var2);
@@ -59,11 +59,13 @@ public class ModelLittleMaid_Chloe2Mixin extends ModelLittleMaidBase implements 
             CustomMaidArmorLayer.translateAndRotate(this.upperLeftLeg, var2);
         }
         CustomMaidArmorLayer.translateAndRotate(var1, var2);
+
+        var2.translate(0, -(4 / 18F), 0);
     }
 
     @Override
     public void translateToChestPat(ModelRenderer var1, PoseStack var2) {
-        var2.translate(0, -(4 / 18F), 0);
+
         CustomMaidArmorLayer.translateAndRotate(this.mainFrame, var2);
         CustomMaidArmorLayer.translateAndRotate(this.bipedBody, var2);
         if (var1 == this.bipedRightArm) {
@@ -72,6 +74,7 @@ public class ModelLittleMaid_Chloe2Mixin extends ModelLittleMaidBase implements 
             CustomMaidArmorLayer.translateAndRotate(this.upperLeftArm, var2);
         }
         CustomMaidArmorLayer.translateAndRotate(var1, var2);
+        var2.translate(0, -(4 / 18F), 0);
     }
 
     @Override

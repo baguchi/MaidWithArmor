@@ -5,3 +5,5 @@
 LittleMaidReBirth-Architecturyとその前提が必要になります
 
 ダウンロードはこちら：
+
+https://github.com/baguchi/MaidWithArmor/releases

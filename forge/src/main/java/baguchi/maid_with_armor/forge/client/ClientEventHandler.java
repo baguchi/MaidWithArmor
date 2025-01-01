@@ -16,7 +16,7 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void registerEntityLayer(EntityRenderersEvent.AddLayers event) {
         if (event.getRenderer(Registration.LITTLE_MAID_MOB.get()) instanceof MaidModelRenderer renderer) {
-            renderer.addLayer(new CustomMaidArmorLayer<>(renderer, event.getEntityModels(), Minecraft.getInstance().getModelManager()));
+            renderer.addLayer(new CustomMaidArmorLayer(renderer, event.getEntityModels(), Minecraft.getInstance().getModelManager()));
         }
     }
 }

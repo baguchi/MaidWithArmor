@@ -31,21 +31,20 @@ import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.sistr.littlemaidmodelloader.entity.compound.IHasMultiModel;
 import net.sistr.littlemaidmodelloader.maidmodel.ModelLittleMaidBase;
 import net.sistr.littlemaidmodelloader.maidmodel.ModelRenderer;
-import net.sistr.littlemaidrebirth.entity.LittleMaidEntity;
 import org.joml.Quaternionf;
 
 import java.util.Map;
 
 
-public class CustomMaidArmorLayer<M extends EntityModel<LittleMaidEntity>> extends RenderLayer<LittleMaidEntity, M> {
+public class CustomMaidArmorLayer<M extends EntityModel<LivingEntity>> extends RenderLayer<LivingEntity, M> {
 
     private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
     private final HumanoidModel defaultBipedModel;
     private final HumanoidModel innerModel;
-    private RenderLayerParent<LittleMaidEntity, M> renderer;
+    private RenderLayerParent<LivingEntity, M> renderer;
     private final TextureAtlas armorTrimAtlas;
 
-    public CustomMaidArmorLayer(RenderLayerParent<LittleMaidEntity, M> render, EntityRendererProvider.Context context) {
+    public CustomMaidArmorLayer(RenderLayerParent<LivingEntity, M> render, EntityRendererProvider.Context context) {
         super(render);
         defaultBipedModel = new HumanoidModel(context.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR));
         this.innerModel = new HumanoidModel(context.bakeLayer(ModelLayers.ARMOR_STAND_INNER_ARMOR));
@@ -53,7 +52,7 @@ public class CustomMaidArmorLayer<M extends EntityModel<LittleMaidEntity>> exten
         this.armorTrimAtlas = context.getModelManager().getAtlas(Sheets.ARMOR_TRIMS_SHEET);
     }
 
-    public CustomMaidArmorLayer(RenderLayerParent<LittleMaidEntity, M> render, EntityModelSet modelSet, ModelManager modelManager) {
+    public CustomMaidArmorLayer(RenderLayerParent<LivingEntity, M> render, EntityModelSet modelSet, ModelManager modelManager) {
         super(render);
         defaultBipedModel = new HumanoidModel(modelSet.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR));
         this.innerModel = new HumanoidModel(modelSet.bakeLayer(ModelLayers.ARMOR_STAND_INNER_ARMOR));
@@ -62,118 +61,119 @@ public class CustomMaidArmorLayer<M extends EntityModel<LittleMaidEntity>> exten
     }
 
     @Override
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, LittleMaidEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        {
-            matrixStackIn.pushPose();
-            ItemStack headItem = entity.getItemBySlot(EquipmentSlot.HEAD);
-            if (headItem.getItem() instanceof ArmorItem) {
-                ArmorItem armoritem = (ArmorItem) headItem.getItem();
-                if (headItem.canEquip(EquipmentSlot.HEAD, entity)) {
-                    HumanoidModel a = defaultBipedModel;
-                    a = getArmorModelHook(entity, headItem, EquipmentSlot.HEAD, a);
-                    boolean notAVanillaModel = a != defaultBipedModel;
-                    this.setModelSlotVisible(a, EquipmentSlot.HEAD);
-                    boolean flag1 = headItem.hasFoil();
-                    int clampedLight = packedLightIn;
-                    if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                        int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(headItem);
-                        float f = (float) (i >> 16 & 255) / 255.0F;
-                        float f1 = (float) (i >> 8 & 255) / 255.0F;
-                        float f2 = (float) (i & 255) / 255.0F;
-                        renderHelmet(headItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(entity, headItem, EquipmentSlot.HEAD, null), notAVanillaModel);
-                        renderHelmet(headItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, headItem, EquipmentSlot.HEAD, "overlay"), notAVanillaModel);
-                    } else {
-                        renderHelmet(headItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, headItem, EquipmentSlot.HEAD, null), notAVanillaModel);
+    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (entity instanceof IHasMultiModel hasMultiModel) {
+            {
+                matrixStackIn.pushPose();
+                ItemStack headItem = entity.getItemBySlot(EquipmentSlot.HEAD);
+                if (headItem.getItem() instanceof ArmorItem) {
+                    ArmorItem armoritem = (ArmorItem) headItem.getItem();
+                    if (headItem.canEquip(EquipmentSlot.HEAD, entity)) {
+                        HumanoidModel a = defaultBipedModel;
+                        a = getArmorModelHook(entity, headItem, EquipmentSlot.HEAD, a);
+                        boolean notAVanillaModel = a != defaultBipedModel;
+                        this.setModelSlotVisible(a, EquipmentSlot.HEAD);
+                        boolean flag1 = headItem.hasFoil();
+                        int clampedLight = packedLightIn;
+                        if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
+                            int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(headItem);
+                            float f = (float) (i >> 16 & 255) / 255.0F;
+                            float f1 = (float) (i >> 8 & 255) / 255.0F;
+                            float f2 = (float) (i & 255) / 255.0F;
+                            renderHelmet(headItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(entity, headItem, EquipmentSlot.HEAD, null), notAVanillaModel);
+                            renderHelmet(headItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, headItem, EquipmentSlot.HEAD, "overlay"), notAVanillaModel);
+                        } else {
+                            renderHelmet(headItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, headItem, EquipmentSlot.HEAD, null), notAVanillaModel);
+                        }
                     }
                 }
+                matrixStackIn.popPose();
             }
-            matrixStackIn.popPose();
-        }
-        {
-            matrixStackIn.pushPose();
-            ItemStack chestItem = entity.getItemBySlot(EquipmentSlot.CHEST);
-            if (chestItem.getItem() instanceof ArmorItem) {
-                ArmorItem armoritem = (ArmorItem) chestItem.getItem();
-                if (armoritem.getEquipmentSlot() == EquipmentSlot.CHEST) {
-                    HumanoidModel a = defaultBipedModel;
-                    a = getArmorModelHook(entity, chestItem, EquipmentSlot.CHEST, a);
-                    boolean notAVanillaModel = a != defaultBipedModel;
-                    this.setModelSlotVisible(a, EquipmentSlot.CHEST);
+            {
+                matrixStackIn.pushPose();
+                ItemStack chestItem = entity.getItemBySlot(EquipmentSlot.CHEST);
+                if (chestItem.getItem() instanceof ArmorItem) {
+                    ArmorItem armoritem = (ArmorItem) chestItem.getItem();
+                    if (armoritem.getEquipmentSlot() == EquipmentSlot.CHEST) {
+                        HumanoidModel a = defaultBipedModel;
+                        a = getArmorModelHook(entity, chestItem, EquipmentSlot.CHEST, a);
+                        boolean notAVanillaModel = a != defaultBipedModel;
+                        this.setModelSlotVisible(a, EquipmentSlot.CHEST);
 
-                    boolean flag1 = chestItem.hasFoil();
-                    int clampedLight = packedLightIn;
-                    if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                        int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(chestItem);
-                        float f = (float) (i >> 16 & 255) / 255.0F;
-                        float f1 = (float) (i >> 8 & 255) / 255.0F;
-                        float f2 = (float) (i & 255) / 255.0F;
-                        renderChestplate(chestItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(entity, chestItem, EquipmentSlot.CHEST, null), notAVanillaModel);
-                        renderChestplate(chestItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, chestItem, EquipmentSlot.CHEST, "overlay"), notAVanillaModel);
-                    } else {
-                        renderChestplate(chestItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, chestItem, EquipmentSlot.CHEST, null), notAVanillaModel);
+                        boolean flag1 = chestItem.hasFoil();
+                        int clampedLight = packedLightIn;
+                        if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
+                            int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(chestItem);
+                            float f = (float) (i >> 16 & 255) / 255.0F;
+                            float f1 = (float) (i >> 8 & 255) / 255.0F;
+                            float f2 = (float) (i & 255) / 255.0F;
+                            renderChestplate(chestItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(entity, chestItem, EquipmentSlot.CHEST, null), notAVanillaModel);
+                            renderChestplate(chestItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, chestItem, EquipmentSlot.CHEST, "overlay"), notAVanillaModel);
+                        } else {
+                            renderChestplate(chestItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, chestItem, EquipmentSlot.CHEST, null), notAVanillaModel);
+                        }
+
                     }
-
                 }
+                matrixStackIn.popPose();
             }
-            matrixStackIn.popPose();
-        }
-        {
-            matrixStackIn.pushPose();
-            ItemStack legItem = entity.getItemBySlot(EquipmentSlot.LEGS);
-            if (legItem.getItem() instanceof ArmorItem) {
-                ArmorItem armoritem = (ArmorItem) legItem.getItem();
-                if (armoritem.getEquipmentSlot() == EquipmentSlot.LEGS) {
-                    HumanoidModel a = this.innerModel;
-                    a = getArmorModelHook(entity, legItem, EquipmentSlot.LEGS, a);
-                    boolean notAVanillaModel = a != defaultBipedModel;
-                    this.setModelSlotVisible(a, EquipmentSlot.LEGS);
+            {
+                matrixStackIn.pushPose();
+                ItemStack legItem = entity.getItemBySlot(EquipmentSlot.LEGS);
+                if (legItem.getItem() instanceof ArmorItem) {
+                    ArmorItem armoritem = (ArmorItem) legItem.getItem();
+                    if (armoritem.getEquipmentSlot() == EquipmentSlot.LEGS) {
+                        HumanoidModel a = this.innerModel;
+                        a = getArmorModelHook(entity, legItem, EquipmentSlot.LEGS, a);
+                        boolean notAVanillaModel = a != defaultBipedModel;
+                        this.setModelSlotVisible(a, EquipmentSlot.LEGS);
 
-                    boolean flag1 = legItem.hasFoil();
-                    int clampedLight = packedLightIn;
-                    if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                        int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(legItem);
-                        float f = (float) (i >> 16 & 255) / 255.0F;
-                        float f1 = (float) (i >> 8 & 255) / 255.0F;
-                        float f2 = (float) (i & 255) / 255.0F;
-                        renderLeg(legItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(entity, legItem, EquipmentSlot.LEGS, null), notAVanillaModel);
-                        renderLeg(legItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, legItem, EquipmentSlot.LEGS, "overlay"), notAVanillaModel);
-                    } else {
-                        renderLeg(legItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, legItem, EquipmentSlot.LEGS, null), notAVanillaModel);
+                        boolean flag1 = legItem.hasFoil();
+                        int clampedLight = packedLightIn;
+                        if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
+                            int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(legItem);
+                            float f = (float) (i >> 16 & 255) / 255.0F;
+                            float f1 = (float) (i >> 8 & 255) / 255.0F;
+                            float f2 = (float) (i & 255) / 255.0F;
+                            renderLeg(legItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(entity, legItem, EquipmentSlot.LEGS, null), notAVanillaModel);
+                            renderLeg(legItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, legItem, EquipmentSlot.LEGS, "overlay"), notAVanillaModel);
+                        } else {
+                            renderLeg(legItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, legItem, EquipmentSlot.LEGS, null), notAVanillaModel);
+                        }
+
                     }
-
                 }
+                matrixStackIn.popPose();
             }
-            matrixStackIn.popPose();
-        }
-        {
-            matrixStackIn.pushPose();
-            ItemStack feetItem = entity.getItemBySlot(EquipmentSlot.FEET);
-            if (feetItem.getItem() instanceof ArmorItem) {
-                ArmorItem armoritem = (ArmorItem) feetItem.getItem();
-                if (armoritem.getEquipmentSlot() == EquipmentSlot.FEET) {
-                    HumanoidModel a = defaultBipedModel;
-                    a = getArmorModelHook(entity, feetItem, EquipmentSlot.FEET, a);
-                    boolean notAVanillaModel = a != defaultBipedModel;
-                    this.setModelSlotVisible(a, EquipmentSlot.FEET);
+            {
+                matrixStackIn.pushPose();
+                ItemStack feetItem = entity.getItemBySlot(EquipmentSlot.FEET);
+                if (feetItem.getItem() instanceof ArmorItem) {
+                    ArmorItem armoritem = (ArmorItem) feetItem.getItem();
+                    if (armoritem.getEquipmentSlot() == EquipmentSlot.FEET) {
+                        HumanoidModel a = defaultBipedModel;
+                        a = getArmorModelHook(entity, feetItem, EquipmentSlot.FEET, a);
+                        boolean notAVanillaModel = a != defaultBipedModel;
+                        this.setModelSlotVisible(a, EquipmentSlot.FEET);
 
-                    boolean flag1 = feetItem.hasFoil();
-                    int clampedLight = packedLightIn;
-                    if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                        int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(feetItem);
-                        float f = (float) (i >> 16 & 255) / 255.0F;
-                        float f1 = (float) (i >> 8 & 255) / 255.0F;
-                        float f2 = (float) (i & 255) / 255.0F;
-                        renderBoot(feetItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(entity, feetItem, EquipmentSlot.FEET, null), notAVanillaModel);
-                        renderBoot(feetItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, feetItem, EquipmentSlot.FEET, "overlay"), notAVanillaModel);
-                    } else {
-                        renderBoot(feetItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, feetItem, EquipmentSlot.FEET, null), notAVanillaModel);
+                        boolean flag1 = feetItem.hasFoil();
+                        int clampedLight = packedLightIn;
+                        if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
+                            int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(feetItem);
+                            float f = (float) (i >> 16 & 255) / 255.0F;
+                            float f1 = (float) (i >> 8 & 255) / 255.0F;
+                            float f2 = (float) (i & 255) / 255.0F;
+                            renderBoot(feetItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(entity, feetItem, EquipmentSlot.FEET, null), notAVanillaModel);
+                            renderBoot(feetItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, feetItem, EquipmentSlot.FEET, "overlay"), notAVanillaModel);
+                        } else {
+                            renderBoot(feetItem, entity, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(entity, feetItem, EquipmentSlot.FEET, null), notAVanillaModel);
+                        }
+
                     }
-
                 }
+                matrixStackIn.popPose();
             }
-            matrixStackIn.popPose();
         }
-
     }
 
     public static ResourceLocation getArmorResource(net.minecraft.world.entity.Entity entity, ItemStack stack, EquipmentSlot slot, @javax.annotation.Nullable String type) {

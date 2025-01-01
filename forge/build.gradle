@@ -7,14 +7,15 @@ architectury {
     forge()
 }
 
-/*loom {
+loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
     forge {
         convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+        //extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+        mixinConfig "maid_with_armor.mixins.json"
     }
-}*/
+}
 
 configurations {
     common
@@ -26,18 +27,7 @@ configurations {
 
 repositories {
     maven { url "https://maven.shedaniel.me/" }
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-        forRepositories(fg.repository) // Only add this if you're using ForgeGradle, otherwise remove this line
-        filter {
-            includeGroup "maven.modrinth"
-        }
-    }
+
 }
 
 dependencies {
@@ -51,7 +41,6 @@ dependencies {
     modImplementation fileTree(dir: './mods', include: '*.jar')
 
     modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
-    modImplementation "maven.modrinth:bagus-lib:${rootProject.bagus_lib_version}"
 }
 
 processResources {

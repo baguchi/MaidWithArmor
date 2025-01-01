@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "baguchi.maid_with_armor.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "client.ModelLittleMaid_ArchetypeMixin",
+    "client.ModelLittleMaid_AugMixin",
+    "client.ModelLittleMaid_Chloe2Mixin",
+    "client.ModelLittleMaid_ElsaMixin",
+    "client.ModelLittleMaid_OrignMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

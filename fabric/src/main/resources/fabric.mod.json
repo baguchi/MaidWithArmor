@@ -10,7 +10,7 @@
   "contact": {
     "sources": "https://github.com/baguchi/MaidWithArmor"
   },
-  "license": "MIT LICENSE",
+  "license": "LittleMaid Licence",
   "icon": "assets/maid_with_armor/icon.png",
   "environment": "*",
   "entrypoints": {
